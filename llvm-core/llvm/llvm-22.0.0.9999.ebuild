@@ -246,6 +246,7 @@ get_distribution_components() {
 			LLVMDebuginfod
 
 			# utilities
+			llvm-ir2vec
 			llvm-tblgen
 			llvm-test-mustache-spec
 			FileCheck
