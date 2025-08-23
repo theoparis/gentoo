@@ -25,7 +25,10 @@ else
 fi
 
 DESCRIPTION="Complete solution to record/convert/stream audio and video"
-HOMEPAGE="https://ffmpeg.org/"
+HOMEPAGE="
+	https://ffmpeg.org/
+	https://code.ffmpeg.org/FFmpeg/FFmpeg/
+"
 
 [[ ${PN} == *-compat ]] && FFMPEG_UNSLOTTED= || FFMPEG_UNSLOTTED=1
 
@@ -333,7 +336,7 @@ src_prepare() {
 	# respect user preferences
 	sed -i '/cflags -fdiagnostics-color/d' configure || die
 
-	# handle *FLAGS here to avoid repeating for each ABI below (bug #923491)
+	# handle here to avoid repeating for each ABI below (bug #923491)
 	filter-lto
 	use elibc_musl && append-cppflags -D__musl__ #940733
 }

@@ -22,14 +22,17 @@ else
 		${FFMPEG_SOC_PATCH:+"
 			soc? ( https://dev.gentoo.org/~chewi/distfiles/${FFMPEG_SOC_PATCH} )
 		"}
-		https://dev.gentoo.org/~ionen/distfiles/ffmpeg-$(ver_cut 1-2)-patchset-1.tar.xz
+		https://dev.gentoo.org/~ionen/distfiles/ffmpeg-$(ver_cut 1-2)-patchset-2.tar.xz
 	"
 	S=${WORKDIR}/ffmpeg-${PV} # avoid ${P} for ffmpeg-compat
 	KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux ~arm64-macos ~x64-macos"
 fi
 
 DESCRIPTION="Complete solution to record/convert/stream audio and video"
-HOMEPAGE="https://ffmpeg.org/"
+HOMEPAGE="
+	https://ffmpeg.org/
+	https://code.ffmpeg.org/FFmpeg/FFmpeg/
+"
 
 [[ ${PN} == *-compat ]] && FFMPEG_UNSLOTTED= || FFMPEG_UNSLOTTED=1
 
@@ -379,24 +382,24 @@ src_prepare() {
 	# respect user preferences
 	sed -i '/cflags -fdiagnostics-color/d' configure || die
 
-	# handle *FLAGS here to avoid repeating for each ABI below (bug #923491)
+	# handle here to avoid repeating for each ABI below (bug #923491)
 	FFMPEG_ENABLE_LTO=
 	if tc-is-lto; then
-		: "$(get-flag flto)" # get -flto=<val> (e.g. =thin)
+		: "$(get-flag -flto)" # get -flto=<val> (e.g. =thin)
 		FFMPEG_ENABLE_LTO=--enable-lto${_#-flto}
 	fi
 	filter-lto
 
 	use elibc_musl && append-cppflags -D__musl__ #940733
-
-	if use npp; then
-		local cuda=${ESYSROOT}/opt/cuda/targets/$(usex amd64 x86_64 sbsa)-linux
-		append-cppflags -I"${cuda}"/include
-		append-ldflags -L"${cuda}"/lib
-	fi
 }
 
 multilib_src_configure() {
+	if use npp && multilib_is_native_abi; then
+		local -x CPPFLAGS=${CPPFLAGS} LDFLAGS=${LDFLAGS}
+		append-cppflags $($(tc-getPKG_CONFIG) --cflags nppc || die)
+		append-ldflags $($(tc-getPKG_CONFIG) --libs-only-L nppc || die)
+	fi
+
 	local conf=( "${S}"/configure ) # not autotools-based
 
 	local prefix=${EPREFIX}/usr

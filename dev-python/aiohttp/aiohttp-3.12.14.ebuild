@@ -17,7 +17,7 @@ HOMEPAGE="
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~mips ppc ppc64 ~riscv ~s390 ~sparc x86"
 IUSE="+native-extensions test-rust"
 
 DEPEND="
@@ -41,6 +41,7 @@ RDEPEND="
 "
 BDEPEND="
 	>=dev-python/multidict-4.5.0[${PYTHON_USEDEP}]
+	dev-python/pkgconfig[${PYTHON_USEDEP}]
 	native-extensions? (
 		>=dev-python/cython-3.1.1[${PYTHON_USEDEP}]
 		dev-python/pkgconfig[${PYTHON_USEDEP}]

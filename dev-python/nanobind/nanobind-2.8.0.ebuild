@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=scikit-build-core
-PYTHON_COMPAT=( python3_{11..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 
 inherit cmake distutils-r1
 
@@ -20,7 +20,7 @@ SRC_URI="
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
 
 DEPEND="
 	>=dev-cpp/robin-map-1.3.0
@@ -34,8 +34,6 @@ EPYTEST_XDIST=1
 distutils_enable_tests pytest
 
 src_prepare() {
-	# https://github.com/scikit-build/scikit-build-core/issues/912
-	sed -i -e '/scikit-build-core/s:0\.10:0.8:' pyproject.toml || die
 	cmake_src_prepare
 	distutils-r1_src_prepare
 }

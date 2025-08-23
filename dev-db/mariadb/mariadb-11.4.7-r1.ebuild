@@ -21,7 +21,7 @@ S="${WORKDIR}/mysql"
 
 LICENSE="GPL-2 LGPL-2.1+"
 SLOT="$(ver_cut 1-2)/${SUBSLOT:-0}"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~ppc ~ppc64 ~riscv ~s390 ~x86"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ppc ppc64 ~riscv ~s390 x86"
 IUSE="+backup bindist columnstore cracklib debug extraengine galera innodb-lz4
 	innodb-lzo innodb-snappy jdbc jemalloc kerberos latin1 mroonga
 	numa odbc oqgraph pam +perl profiling rocksdb selinux +server sphinx
@@ -97,7 +97,6 @@ BDEPEND="
 		acct-group/mysql
 		acct-user/mysql
 		dev-perl/Net-SSLeay
-		virtual/perl-Getopt-Long
 	)
 "
 DEPEND="${COMMON_DEPEND}
@@ -309,6 +308,9 @@ src_configure() {
 
 	# bug #283926, with GCC4.4, this is required to get correct behavior.
 	append-flags -fno-strict-aliasing
+
+	# Workaround for bug #959423 (https://jira.mariadb.org/browse/MDEV-37148)
+	append-flags -fno-tree-vectorize
 
 	# debug hack wrt #497532
 	local mycmakeargs=(

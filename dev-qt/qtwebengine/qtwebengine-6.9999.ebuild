@@ -3,14 +3,13 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..13} )
-PYTHON_REQ_USE="xml(+)"
+PYTHON_COMPAT=( python3_{11..14} )
 inherit check-reqs flag-o-matic multiprocessing optfeature
 inherit prefix python-any-r1 qt6-build toolchain-funcs
 
 DESCRIPTION="Library for rendering dynamic web content in Qt6 C++ and QML applications"
 SRC_URI+="
-	https://dev.gentoo.org/~ionen/distfiles/${PN}-6.10-patchset-1.tar.xz
+	https://dev.gentoo.org/~ionen/distfiles/${PN}-6.10-patchset-2.tar.xz
 "
 
 if [[ ${QT6_BUILD_TYPE} == release ]]; then
@@ -268,11 +267,12 @@ src_configure() {
 }
 
 src_compile() {
-	# tentatively work around a possible (rare) race condition (bug #921680),
-	# has good chances to be obsolete but keep for now as a safety
-	cmake_build WebEngineCore_sync_all_public_headers
-
 	cmake_src_compile
+
+	# exact cause unknown, but >=qtwebengine-6.9.2 started to act as if
+	# QtWebEngineProcess is marked USER_FACING despite not set anywhere
+	# and this creates a user_facing_tool_links.txt with a broken symlink
+	:> "${BUILD_DIR}"/user_facing_tool_links.txt || die
 }
 
 src_test() {

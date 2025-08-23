@@ -97,7 +97,6 @@ BDEPEND="
 		acct-group/mysql
 		acct-user/mysql
 		dev-perl/Net-SSLeay
-		virtual/perl-Getopt-Long
 	)
 "
 DEPEND="${COMMON_DEPEND}
@@ -299,6 +298,9 @@ src_configure() {
 
 	# bug #283926, with GCC4.4, this is required to get correct behavior.
 	append-flags -fno-strict-aliasing
+
+	# Workaround for bug #959423 (https://jira.mariadb.org/browse/MDEV-37148)
+	append-flags -fno-tree-vectorize
 
 	# debug hack wrt #497532
 	local mycmakeargs=(

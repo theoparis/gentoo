@@ -14,7 +14,7 @@ HOMEPAGE="https://apps.kde.org/kget/"
 
 LICENSE="GPL-2" # TODO: CHECK
 SLOT="6"
-KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="amd64 arm64 ~ppc64 ~riscv ~x86"
 IUSE="bittorrent gpg mms sqlite"
 
 RDEPEND="
@@ -44,6 +44,10 @@ RDEPEND="
 	sqlite? ( dev-db/sqlite:3 )
 "
 DEPEND="${RDEPEND}"
+
+PATCHES=(
+	"${FILESDIR}"/kget-25.04.03-fix-gpgmepp-2.patch
+)
 
 src_configure() {
 	local mycmakeargs=(

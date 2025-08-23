@@ -5,7 +5,7 @@ EAPI=8
 
 LLVM_COMPAT=( {15..20} )
 LLVM_OPTIONAL=1
-PYTHON_COMPAT=( python3_{11..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 inherit cmake edo flag-o-matic go-env llvm-r2 multiprocessing
 inherit python-any-r1 readme.gentoo-r1 xdg
 
@@ -198,8 +198,10 @@ src_configure() {
 
 		-DBUILD_PLUGIN_SERIALTERMINAL=$(usex serialterminal)
 		-DENABLE_SVG_SUPPORT=$(usex svg)
-		$(usev !cmdbridge-server -DGO_BIN=GO_BIN-NOTFOUND) #945925
 		-DWITH_QMLDESIGNER=$(usex qmldesigner)
+
+		$(usev !cmdbridge-server -DGO_BIN=GO_BIN-NOTFOUND) #945925
+		-DUPX_BIN=UPX_BIN-NOTFOUND #961623
 
 		# meant to be in sync with qtbase[journald], but think(?) not worth
 		# handling given qt-creator can use QT_FORCE_STDERR_LOGGING=1 nowadays

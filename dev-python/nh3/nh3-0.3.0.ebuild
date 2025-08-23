@@ -3,6 +3,11 @@
 
 EAPI=8
 
+DISTUTILS_EXT=1
+DISTUTILS_USE_PEP517=maturin
+PYTHON_COMPAT=( pypy3_11 python3_{11..14} )
+
+RUST_MIN_VER="1.82.0"
 CRATES="
 	aliasable@0.1.3
 	ammonia@4.1.1
@@ -109,10 +114,6 @@ CRATES="
 	zerovec@0.11.2
 "
 
-DISTUTILS_EXT=1
-DISTUTILS_USE_PEP517=maturin
-PYTHON_COMPAT=( pypy3_11 python3_{11..14} )
-
 inherit cargo distutils-r1 pypi
 
 DESCRIPTION="Ammonia HTML sanitizer Python binding"
@@ -128,7 +129,7 @@ LICENSE="MIT"
 # Dependent crate licenses
 LICENSE+=" Apache-2.0-with-LLVM-exceptions MIT MPL-2.0 Unicode-3.0"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
+KEYWORDS="amd64 arm arm64 ~loong ppc ppc64 ~riscv ~s390 ~sparc x86"
 
 EPYTEST_PLUGINS=()
 distutils_enable_tests pytest

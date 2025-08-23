@@ -6,7 +6,7 @@ EAPI=8
 inherit kernel-install toolchain-funcs unpacker verify-sig
 
 MY_P=linux-${PV%.*}
-PATCHSET=linux-gentoo-patches-5.15.187
+PATCHSET=linux-gentoo-patches-5.10.240
 BINPKG=${PF/-bin}-1
 SHA256SUM_DATE=20250717
 
@@ -42,7 +42,7 @@ SRC_URI+="
 "
 S=${WORKDIR}
 
-KEYWORDS="~amd64 ~arm64 ~ppc64 ~x86"
+KEYWORDS="amd64 arm64 ppc64 x86"
 
 RDEPEND="
 	!sys-kernel/gentoo-kernel:${SLOT}
